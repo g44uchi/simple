@@ -1,0 +1,54 @@
+Liberty上で常駐処理の例
+featureとしてはconcurrent/CDIを利用。CDIのApplicationScopedの初期化処理からScheduledExecutorServiceをスケジュール登録。
+
+ログ出力例） 12:26:10ごろに停止を実行した
+********************************************************************************
+product = Open Liberty 20.0.0.12 (wlp-1.0.47.cl201220201111-0736)
+wlp.install.dir = C:/ws/simple/liberty_polling_process/finish/build/wlp/
+java.home = C:\software\AdoptOpenJDK\jdk-11.0.9.11-openj9
+java.version = 11.0.9
+java.runtime = OpenJDK Runtime Environment (11.0.9+11)
+os = Windows 10 (10.0; amd64) (ja_JP)
+process = 8084@DESKTOP-GPBQNJK
+********************************************************************************
+[2021/01/20 12:25:12:803 JST] 00000001 com.ibm.ws.kernel.launch.internal.FrameworkManager           A CWWKE0001I: サーバー defaultServer が起動されました。
+[2021/01/20 12:25:14:303 JST] 00000024 com.ibm.ws.config.xml.internal.ServerXMLConfiguration        A CWWKG0093A: 構成ドロップイン・リソースを処理中です: C:\ws\simple\liberty_polling_process\finish\build\wlp\usr\servers\defaultServer\configDropins\overrides\liberty-plugin-variable-config.xml
+[2021/01/20 12:25:14:440 JST] 00000001 com.ibm.ws.kernel.launch.internal.FrameworkManager           I CWWKE0002I: カーネルは 2.244 秒 秒後に始動されました。
+[2021/01/20 12:25:14:469 JST] 0000002f com.ibm.ws.kernel.feature.internal.FeatureManager            I CWWKF0007I: フィーチャー更新が開始しました。
+[2021/01/20 12:25:15:282 JST] 00000026 com.ibm.ws.app.manager.internal.monitor.DropinMonitor        A CWWKZ0058I: アプリケーションの dropins をモニター中です。
+[2021/01/20 12:25:16:563 JST] 0000003d com.ibm.ws.app.manager.AppMessageHelper                      I CWWKZ0018I: アプリケーション GradleSample を開始中です。
+[2021/01/20 12:25:16:564 JST] 0000003d bm.ws.app.manager.war.internal.WARDeployedAppInfoFactoryImpl I CWWKZ0134I: GradleSample アプリケーションは C:\ws\simple\liberty_polling_process\finish\build\wlp\usr\servers\defaultServer\apps\GradleSample.war.xml ロケーションにあるルーズ・アプリケーション定義を使用しています。
+[2021/01/20 12:25:31:904 JST] 0000003d com.ibm.ws.session.WASSessionCore                            I SESN8501I: セッション・マネージャーが、永続ストレージ・ロケーションを検出しませんでした。HttpSession オブジェクトはローカル・アプリケーション・サーバーのメモリーに保管されます。
+[2021/01/20 12:25:32:084 JST] 0000003d org.jboss.weld.Version                                       I WELD-000900: 3.1.4 (Final)
+[2021/01/20 12:25:37:029 JST] 0000003d com.ibm.ws.webcontainer.osgi.webapp.WebGroup                 I SRVE0169I: Web モジュールをロード中: Hello Servlet。
+[2021/01/20 12:25:37:033 JST] 0000003d com.ibm.ws.webcontainer                                      I SRVE0250I: Web モジュール Hello Servlet は default_host にバインドされています。
+[2021/01/20 12:25:37:033 JST] 0000003d com.ibm.ws.http.internal.VirtualHostImpl                     A CWWKT0016I: Web アプリケーションが使用可能です (default_host): http://9.211.129.229:9080/GradleSample/
+[2021/01/20 12:25:37:050 JST] 00000041 com.ibm.ws.session.WASSessionCore                            I SESN0176I: アプリケーション・キー default_host/GradleSample に新しいセッション・コンテキストが作成されます。
+[2021/01/20 12:25:37:060 JST] 00000041 com.ibm.ws.util                                              I SESN0172I: セッション・マネージャーは、セッション ID の生成に Java のデフォルト SecureRandom 実装を使用しています。
+[2021/01/20 12:25:37:105 JST] 00000041 SystemOut                                                    O MyExecutorService handle begin com.ibm.ws.webcontainer40.facade.ServletContextFacade40@594f5f69
+[2021/01/20 12:25:37:112 JST] 00000041 SystemOut                                                    O MyExecutorService handle end
+[2021/01/20 12:25:37:118 JST] 00000041 com.ibm.ws.app.manager.AppMessageHelper                      A CWWKZ0001I: アプリケーション GradleSample が 20.555 秒で開始しました。
+[2021/01/20 12:25:37:135 JST] 0000002f com.ibm.ws.tcpchannel.internal.TCPPort                       I CWWKO0219I: TCP チャネル defaultHttpEndpoint が開始され、現在、ホスト *  (IPv6)、ポート 9080 の要求を listen しています。
+[2021/01/20 12:25:37:154 JST] 0000002f com.ibm.ws.kernel.feature.internal.FeatureManager            A CWWKF0012I: サーバーは次のフィーチャーをインストールしました。[cdi-2.0, concurrent-1.0, servlet-4.0]。
+[2021/01/20 12:25:37:155 JST] 0000002f com.ibm.ws.kernel.feature.internal.FeatureManager            I CWWKF0008I: フィーチャー更新が 22.715 秒で完了しました。
+[2021/01/20 12:25:37:155 JST] 0000002f com.ibm.ws.kernel.feature.internal.FeatureManager            A CWWKF0011I: defaultServer サーバーは、Smarter Planet に対応する準備ができました。defaultServer サーバーは 24.960 秒で始動しました。
+[2021/01/20 12:25:37:637 JST] 0000003e com.ibm.ws.webcontainer.osgi.mbeans.PluginGenerator          I SRVE9103I: Web サーバー・プラグイン構成ファイルは、このサーバー用に、C:\ws\simple\liberty_polling_process\finish\build\wlp\usr\servers\defaultServer\logs\state\plugin-cfg.xml に自動的に生成されました。
+[2021/01/20 12:25:42:122 JST] 0000003e SystemOut                                                    O MyCallable call begin
+[2021/01/20 12:25:47:133 JST] 0000003e SystemOut                                                    O MyCallable loop 0
+[2021/01/20 12:25:52:142 JST] 0000003e SystemOut                                                    O MyCallable loop 1
+[2021/01/20 12:25:57:146 JST] 0000003e SystemOut                                                    O MyCallable loop 2
+[2021/01/20 12:26:02:153 JST] 0000003e SystemOut                                                    O MyCallable loop 3
+[2021/01/20 12:26:07:161 JST] 0000003e SystemOut                                                    O MyCallable loop 4
+[2021/01/20 12:26:10:781 JST] 00000020 com.ibm.ws.kernel.launch.internal.ServerCommandListener      A CWWKE0055I: 2021年1月20日水曜日 12:26 にサーバー・シャットダウンが要求されました。 サーバー defaultServer がシャットダウンしています。
+[2021/01/20 12:26:10:786 JST] 0000004b com.ibm.ws.runtime.update.internal.RuntimeUpdateManagerImpl  A CWWKE1100I: サーバーが静止するまで最大 30 秒間待機します。
+[2021/01/20 12:26:10:798 JST] 00000042 com.ibm.ws.tcpchannel.internal.TCPChannel                    I CWWKO0220I: TCP チャネル defaultHttpEndpoint は、ホスト *  (IPv6)、ポート 9080 での要求の listen を停止しました。
+[2021/01/20 12:26:10:800 JST] 00000042 com.ibm.ws.http.internal.VirtualHostImpl                     A CWWKT0017I: Web アプリケーションが削除されました (default_host): http://9.211.129.229:9080/GradleSample/
+[2021/01/20 12:26:12:164 JST] 0000003e SystemOut                                                    O MyCallable loop 5
+[2021/01/20 12:26:17:181 JST] 0000003e SystemOut                                                    O MyCallable loop 6
+[2021/01/20 12:26:22:192 JST] 0000003e SystemOut                                                    O MyCallable loop 7
+[2021/01/20 12:26:27:197 JST] 0000003e SystemOut                                                    O MyCallable loop 8
+[2021/01/20 12:26:32:209 JST] 0000003e SystemOut                                                    O MyCallable loop 9
+[2021/01/20 12:26:32:210 JST] 0000003e SystemOut                                                    O MyCallable call end
+[2021/01/20 12:26:32:210 JST] 0000004b com.ibm.ws.runtime.update.internal.RuntimeUpdateManagerImpl  I CWWKE1101I: サーバーの静止が完了しました。
+[2021/01/20 12:26:32:611 JST] 0000003c com.ibm.ws.app.manager.AppMessageHelper                      A CWWKZ0009I: アプリケーション GradleSample は正常に停止しました。
+[2021/01/20 12:26:33:422 JST] 00000001 com.ibm.ws.kernel.launch.internal.FrameworkManager           A CWWKE0036I: 1 分, 21.227 秒後にサーバー defaultServer が停止しました。
